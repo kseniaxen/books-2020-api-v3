@@ -18,15 +18,15 @@ function getDbContext(){
   /* Параметры получения результата из БД */
   $options = array(
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8'
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC/*,
+    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8'*/
   );
   /* Попытка соединиться с БД и записать в переменную контекст для дальнейшей работы */
   try {
     $pdo = new PDO($cs, $user, $pass, $options);
     return $pdo;
   } catch (PDOException $e) {
-    echo mb_convert_encoding($e->getMessage(), 'UTF-8', 'Windows-1251');
+    // echo mb_convert_encoding($e->getMessage(), 'UTF-8', 'Windows-1251');
     return false;
   }
 }
