@@ -121,7 +121,7 @@ class Book {
       }
     }
   }
-  // Удаление строки книге из БД по идентификатору
+  // Удаление строки книги из БД по идентификатору
   function delete ($id) {
     try {
       // Получаем контекст для работы с БД
@@ -199,6 +199,27 @@ class Book {
     } catch (PDOException $e) {
         echo $e->getMessage();
         return false;
+    }
+  }
+  // Получение строки книги из БД по идентификатору
+  function get ($id) {
+    try {
+      // Получаем контекст для работы с БД
+      $pdo = getDbContext();
+      // Готовим sql-запрос удаления строки из таблицы "Книги"
+      $ps = $pdo->prepare("SELECT * FROM `Books` WHERE `id` = $id");
+      // Выполняем
+      $ps->execute();
+      //Сохраняем полученные данные в ассоциативный массив
+      $book = $ps->fetch();
+      return $book;
+    } catch (PDOException $e) {
+      $err = $e->getMessage();
+      if (substr($err, 0, strrpos($err, ":")) == 'SQLSTATE[23000]:Integrity constraint violation') {
+        return 1062;
+      } else {
+        return $e->getMessage();
+      }
     }
   }
 }

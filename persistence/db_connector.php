@@ -6,13 +6,17 @@ function getDbContext(){
   /* Параметры соединения */
   // адрес сервера mysql
   $host = "localhost:3307"; // localhost
+  // $host = "localhost";
   // имя пользователя БД
   $user = "root"; // id12898591_root
+  // $user = "id12898591_root";
   // пароль пользователя БД
   $pass = "root"; // Password2
+  // $pass = "Password2";
   // имя БД
   // $dbname = "tyaamariupol";
   $dbname = "books_as_a_gift"; // id12898591_books_as_a_gift
+  // $dbname = "id12898591_books_as_a_gift";
   // склеиваем строку соединения
   $cs = 'mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8;';
   /* Параметры получения результата из БД */
