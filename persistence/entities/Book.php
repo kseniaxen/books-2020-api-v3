@@ -173,8 +173,10 @@ class Book {
         if (isset($args['city']) && $args['city']->id) {
           $whereClouse[] = "`b`.`cityId` = '{$args['city']->id}'";
         }
-        if (isset($args['typeId'])) {
+        if (isset($args['typeId']) && $args['typeId']) {
           $whereClouse[] = "`b`.`typeId` = '{$args['typeId']}'";
+        } else if (!isset($args['userId'])) {
+          $whereClouse[] = "`b`.`typeId` <> 3";
         }
         $whereClouseString = 'WHERE ';
         $expressionCount = 0;
@@ -189,7 +191,7 @@ class Book {
         // с подключением связанных таблиц "Страна", "Город", "Тип", "Язык"
         // сортируем по идентификаторам,
         // пытаемся получить только три значения из строк, идентификаторы которых меньше заданного
-        $ps = $pdo->prepare("SELECT `b`.`id`, `b`.`updatedAt`, `b`.`userId`, `b`.`userEmail`, `b`.`title`, `b`.`author`, `b`.`genre`, `b`.`publisher`, `b`.`volumeOrIssue`, `b`.`description`, `co`.`name` AS 'country', `ci`.`name` AS 'city', `ty`.`id` AS 'type', `b`.`language`, `b`.`publicationDate`, `b`.`image`, `b`.`active` FROM `Books` AS `b` INNER JOIN `Country` AS `co` ON (`b`.`countryId` = `co`.`id`) INNER JOIN `City` AS `ci` ON (`b`.`cityId` = `ci`.`id`) INNER JOIN `Type` AS `ty` ON (`b`.`typeId` = `ty`.`id`) {$whereClouseString} ORDER BY `b`.`id` DESC LIMIT 2");
+        $ps = $pdo->prepare("SELECT `b`.`id`, `b`.`updatedAt`, `b`.`userId`, `b`.`userEmail`, `b`.`title`, `b`.`author`, `b`.`genre`, `b`.`publisher`, `b`.`volumeOrIssue`, `b`.`description`, `co`.`name` AS 'country', `ci`.`name` AS 'city', `ty`.`id` AS 'type', `b`.`language`, `b`.`publicationDate`, `b`.`image`, `b`.`active` FROM `Books` AS `b` INNER JOIN `Country` AS `co` ON (`b`.`countryId` = `co`.`id`) INNER JOIN `City` AS `ci` ON (`b`.`cityId` = `ci`.`id`) INNER JOIN `Type` AS `ty` ON (`b`.`typeId` = `ty`.`id`) {$whereClouseString} ORDER BY `b`.`id` DESC LIMIT 4");
         // echo "SELECT `b`.`id`, `b`.`updatedAt`, `b`.`userId`, `b`.`title`, `b`.`author`, `b`.`genre`, `b`.`description`, `co`.`name` AS 'country', `ci`.`name` AS 'city', `ty`.`name` AS 'type', `b`.`image`, `b`.`active` FROM `Books` AS `b` INNER JOIN `Country` AS `co` ON (`b`.`countryId` = `co`.`id`) INNER JOIN `City` AS `ci` ON (`b`.`cityId` = `ci`.`id`) INNER JOIN `Type` AS `ty` ON (`b`.`typeId` = `ty`.`id`) {$whereClouseString} ORDER BY `b`.`id` DESC LIMIT 3";
         // Выполняем
         $ps->execute();
@@ -202,7 +204,7 @@ class Book {
     }
   }
   // Получение строки книги из БД по идентификатору
-  function get ($id) {
+  static function get ($id) {
     try {
       // Получаем контекст для работы с БД
       $pdo = getDbContext();
