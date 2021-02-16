@@ -44,6 +44,8 @@ if (isset($_REQUEST['controller'])) {
     } else {
       if (isset($_REQUEST['id'])) {
         $response->data = $controller::$action($_REQUEST['id']);
+      } else if (isset($_REQUEST['userId'])) {
+        $response->data = $controller::$action($_REQUEST['userId']);
       } else {
         $response->data = $controller::$action();
       }
