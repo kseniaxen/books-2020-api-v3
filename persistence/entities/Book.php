@@ -247,4 +247,27 @@ class Book {
       }
     }
   }
+
+  static function getTotalCount () {
+    try {
+      // Получаем контекст для работы с БД
+      $pdo = getDbContext();
+      // Готовим sql-запрос удаления строки из таблицы "Книги"
+      $ps = $pdo->prepare("SELECT COUNT(*) AS `totalCount` FROM `Books`");
+      // var_dump("SELECT COUNT(*) AS `totalCount` FROM `Books` WHERE `userId` = '$userId'");
+      // die();
+      // Выполняем
+      $ps->execute();
+      //Сохраняем полученные данные в ассоциативный массив
+      $book = $ps->fetch();
+      return $book;
+    } catch (PDOException $e) {
+      $err = $e->getMessage();
+      if (substr($err, 0, strrpos($err, ":")) == 'SQLSTATE[23000]:Integrity constraint violation') {
+        return 1062;
+      } else {
+        return $e->getMessage();
+      }
+    }
+  }
 }

@@ -5,7 +5,7 @@ function getDbContext(){
   $pdo = false;
   /* Параметры соединения */
   // адрес сервера mysql
-  $host = "localhost:3307"; // localhost
+  $host = "localhost:3306"; // localhost
   // $host = "localhost";
   // имя пользователя БД
   $user = "root"; // id12898591_root
